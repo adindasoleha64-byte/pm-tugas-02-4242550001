@@ -35,9 +35,21 @@ void main() {
       print('Format salah: $item');
       continue; // lompat ke item berikutnya
     }
-    
+
     // bagian[0] = kode, bagian[1] = jumlah (masih String)
     final int? jumlah = int.tryParse(bagian[1]);
-    print('kode: ${bagian[0]}, jumlah: $jumlah');
+
+    final produk = katalog[bagian[0]];
+
+    if (produk == null) {
+      print('Ditolak: kode ${bagian[0]} tidak ada');
+      continue;
+    }
+    if (jumlah == null || jumlah <= 0) {
+      print('Ditolak: jumlah ${bagian[1]} tidak valid');
+      continue;
+    }
+
+    print('${produk.nama} x$jumlah');
   }
 }
