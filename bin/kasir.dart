@@ -10,7 +10,7 @@ void main() {
   };
 
   print('KATALOG TOKO');
-    // header tabel
+  // header tabel
   print('${'Kode'.padRight(6)}${'Nama'.padRight(24)}${'Harga'.padLeft(12)}');
   print('-' * 42);
 
@@ -19,6 +19,25 @@ void main() {
     final kode = e.key;
     final nama = e.value.nama;
     final harga = e.value.harga;
-    print('${kode.padRight(6)}${nama.padRight(24)}${harga.toString().padLeft(12)}');
+    print(
+      '${kode.padRight(6)}${nama.padRight(24)}${harga.toString().padLeft(12)}',
+    );
+  }
+
+  stdout.write('Pesanan (contoh: P01x2, P03x1): ');
+  final String input = stdin.readLineSync() ?? '';
+  final List<String> items = input.split(',');
+
+  for (final item in items) {
+    final List<String> bagian = item.trim().split('x');
+
+    if (bagian.length != 2) {
+      print('Format salah: $item');
+      continue; // lompat ke item berikutnya
+    }
+    
+    // bagian[0] = kode, bagian[1] = jumlah (masih String)
+    final int? jumlah = int.tryParse(bagian[1]);
+    print('kode: ${bagian[0]}, jumlah: $jumlah');
   }
 }
