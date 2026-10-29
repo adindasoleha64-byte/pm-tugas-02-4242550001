@@ -26,6 +26,7 @@ void main() {
 
   stdout.write('Pesanan (contoh: P01x2, P03x1): ');
   final String input = stdin.readLineSync() ?? '';
+  final List<({String nama, int harga, int jumlah})> pesanan = [];
   final List<String> items = input.split(',');
 
   for (final item in items) {
@@ -49,7 +50,15 @@ void main() {
       print('Ditolak: jumlah ${bagian[1]} tidak valid');
       continue;
     }
-
-    print('${produk.nama} x$jumlah');
+    pesanan.add((nama: produk.nama, harga: produk.harga, jumlah: jumlah));
   }
+
+  final List<int> subtotal = pesanan.map((p) => p.harga * p.jumlah).toList();
+  final int total = subtotal.fold<int>(0, (sum, s) => sum + s);
+  final int diskon = total >= 100000 ? total ~/ 10 : 0;
+  final int bayar = total - diskon;
+
+  print('Total  : $total');
+  print('Diskon : $diskon');
+  print('Bayar  : $bayar');
 }
