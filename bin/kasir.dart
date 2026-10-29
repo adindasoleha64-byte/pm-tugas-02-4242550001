@@ -25,7 +25,7 @@ void main() {
     );
   }
 
-  stdout.write('Pesanan (contoh: P01x2, P03x1): ');
+  stdout.write('Pesanan : ');
   final String input = stdin.readLineSync() ?? '';
   final List<({String nama, int harga, int jumlah})> pesanan = [];
   final List<String> items = input.split(',');
@@ -46,7 +46,7 @@ void main() {
     final produk = katalog[bagian[0]];
 
     if (produk == null) {
-      ditolak.add('kode ${bagian[0]} tidak ada');
+      ditolak.add('kode ${bagian[0]} tidak ada \n');
       continue;
     }
     if (jumlah == null || jumlah <= 0) {
