@@ -14,6 +14,7 @@ void main() {
   print('${'Kode'.padRight(6)}${'Nama'.padRight(24)}${'Harga'.padLeft(12)}');
   print('-' * 42);
 
+  final Set<String> kategoriDibeli = <String>{};
   // satu baris untuk tiap produk
   for (final e in katalog.entries) {
     final kode = e.key;
@@ -29,11 +30,13 @@ void main() {
   final List<({String nama, int harga, int jumlah})> pesanan = [];
   final List<String> items = input.split(',');
 
+  final List<String> ditolak = [];
+
   for (final item in items) {
     final List<String> bagian = item.trim().split('x');
 
     if (bagian.length != 2) {
-      print('Format salah: $item');
+      ditolak.add('Format salah $item');
       continue; // lompat ke item berikutnya
     }
 
@@ -43,14 +46,15 @@ void main() {
     final produk = katalog[bagian[0]];
 
     if (produk == null) {
-      print('Ditolak: kode ${bagian[0]} tidak ada');
+      ditolak.add('kode ${bagian[0]} tidak ada');
       continue;
     }
     if (jumlah == null || jumlah <= 0) {
-      print('Ditolak: jumlah ${bagian[1]} tidak valid');
+      ditolak.add('jumlah ${bagian[1]} tidak valid');
       continue;
     }
     pesanan.add((nama: produk.nama, harga: produk.harga, jumlah: jumlah));
+    kategoriDibeli.add(produk.kategori);
   }
 
   final List<int> subtotal = pesanan.map((p) => p.harga * p.jumlah).toList();
@@ -58,7 +62,21 @@ void main() {
   final int diskon = total >= 100000 ? total ~/ 10 : 0;
   final int bayar = total - diskon;
 
+  print('STRUK BELANJA');
+  print('-' * 42);
+  for (final p in pesanan) {
+    final int sub = p.harga * p.jumlah;
+    print(
+      '${p.nama.padRight(24)}${'x${p.jumlah}'.padRight(6)}${sub.toString().padLeft(12)}',
+    );
+  }
+  print('-' * 42);
+
   print('Total  : $total');
   print('Diskon : $diskon');
   print('Bayar  : $bayar');
+  print('Kategori dibeli : ${kategoriDibeli.join(', ')}');
+  if (ditolak.isNotEmpty) {
+    print('Item ditolak    : ${ditolak.join('; ')}');
+  }
 }
